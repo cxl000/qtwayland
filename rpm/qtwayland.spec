@@ -7,6 +7,7 @@ Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
 URL:        http://qt.nokia.com
 Source0:    %{name}-%{version}.tar.bz2
+Source10:   wayland.xml
 Source100:	precheckin.sh
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
@@ -66,6 +67,7 @@ This package contains the Qt wayland compositor examples for wayland_egl
 
 %prep
 %setup -q -n %{name}-%{version}/qtwayland
+cp %{SOURCE10} src/3rdparty/protocol/wayland.xml
 
 %build
 export QTDIR=/usr/share/qt5

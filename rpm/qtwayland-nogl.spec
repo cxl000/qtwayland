@@ -7,6 +7,7 @@ Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
 URL:        http://qt.nokia.com
 Source0:    %{name}-%{version}.tar.bz2
+Source10:   wayland.xml
 Source100:	precheckin.sh
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
@@ -66,6 +67,7 @@ This package contains the Qt wayland compositor examples for nogl
 
 %prep
 %setup -q -n %{name}-%{version}/qtwayland
+cp %{SOURCE10} src/3rdparty/protocol/wayland.xml
 
 %build
 export QTDIR=/usr/share/qt5
@@ -88,6 +90,9 @@ find %{buildroot}%{_libdir} -type f -name '*.prl' \
 # We don't need qt5/Qt/
 rm -rf %{buildroot}/%{_includedir}/qt5/Qt
 
+# Install generated protocol headers
+install -D -p -m 0644 src/compositor/qwayland-server-wayland.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/
+install -D -p -m 0644 src/compositor/wayland-wayland-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/
 
 %fdupes %{buildroot}/%{_includedir}
 
