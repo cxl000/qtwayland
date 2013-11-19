@@ -85,11 +85,11 @@ Surface::Surface(struct wl_client *client, uint32_t id, Compositor *compositor)
     , m_shellSurface(0)
     , m_transientInactive(false)
     , m_isCursorSurface(false)
-    , m_textureIdBufferNeedsDisown(false)
-    , m_textureIdBuffer(0)
 {
     wl_list_init(&m_frame_callback_list);
-    wl_list_init(&m_pending_frame_callback_list);
+
+    for (int i = 0; i < buffer_pool_size; i++)
+        m_bufferPool[i] = new SurfaceBuffer(this);
 }
 
 Surface::~Surface()
@@ -97,7 +97,7 @@ Surface::~Surface()
     delete m_waylandSurface;
     delete m_subSurface;
 
-    for (int i = 0; i < m_bufferPool.size(); i++) {
+    for (int i = 0; i < buffer_pool_size; i++) {
         if (!m_bufferPool[i]->pageFlipperHasBuffer())
             delete m_bufferPool[i];
     }
@@ -212,36 +212,17 @@ GLuint Surface::textureId(QOpenGLContext *context) const
         QWaylandGraphicsHardwareIntegration *hwIntegration = m_compositor->graphicsHWIntegration();
         const_cast<SurfaceBuffer *>(surfacebuffer)->createTexture(hwIntegration,context);
     }
-
-    if (m_textureIdBufferNeedsDisown) {
-        Q_ASSERT(m_textureIdBuffer);
-        const_cast<SurfaceBuffer *>(m_textureIdBuffer)->disown();
-        m_textureIdBufferNeedsDisown = false;
-    }
-    m_textureIdBuffer = surfacebuffer;
-
     return surfacebuffer->texture();
 }
 #endif // QT_COMPOSITOR_WAYLAND_GL
 
 void Surface::sendFrameCallback()
 {
-    SurfaceBuffer *surfaceBuffer = currentSurfaceBuffer();
-    if (surfaceBuffer)
-        surfaceBuffer->setDisplayed();
-
+    SurfaceBuffer *surfacebuffer = currentSurfaceBuffer();
+    surfacebuffer->setDisplayed();
     if (m_backBuffer) {
-        if (m_frontBuffer) {
-#ifdef QT_COMPOSITOR_WAYLAND_GL
-            if (m_textureIdBuffer == m_frontBuffer) {
-                m_textureIdBufferNeedsDisown = true;
-            } else {
-#endif
-                m_frontBuffer->disown();
-#ifdef QT_COMPOSITOR_WAYLAND_GL
-            }
-#endif
-        }
+        if (m_frontBuffer)
+            m_frontBuffer->disown();
         m_frontBuffer = m_backBuffer;
     }
 
@@ -369,10 +350,12 @@ void Surface::doUpdate() {
         sendFrameCallback();
     } else {
         SurfaceBuffer *surfaceBuffer = currentSurfaceBuffer();
-        if (surfaceBuffer && surfaceBuffer->damageRect().isValid()) {
-            emit m_waylandSurface->damaged(surfaceBuffer->damageRect());
-        } else {
-            sendFrameCallback();
+
+        if (surfaceBuffer) {
+            if (surfaceBuffer->damageRect().isValid()) {
+                m_compositor->markSurfaceAsDirty(this);
+                emit m_waylandSurface->damaged(surfaceBuffer->damageRect());
+            }
         }
     }
 }
@@ -380,7 +363,7 @@ void Surface::doUpdate() {
 SurfaceBuffer *Surface::createSurfaceBuffer(struct ::wl_resource *buffer)
 {
     SurfaceBuffer *newBuffer = 0;
-    for (int i = 0; i < m_bufferPool.size(); i++) {
+    for (int i = 0; i < Surface::buffer_pool_size; i++) {
         if (!m_bufferPool[i]->isRegisteredWithBuffer()) {
             newBuffer = m_bufferPool[i];
             newBuffer->initialize(buffer);
@@ -388,14 +371,7 @@ SurfaceBuffer *Surface::createSurfaceBuffer(struct ::wl_resource *buffer)
         }
     }
 
-    if (!newBuffer) {
-        newBuffer = new SurfaceBuffer(this);
-        newBuffer->initialize(buffer);
-        m_bufferPool.append(newBuffer);
-        if (m_bufferPool.size() > 3)
-            qWarning() << Q_FUNC_INFO << "Increased buffer pool size to" << m_bufferPool.size() << "for surface with title:" << title() << "className:" << className();
-    }
-
+    Q_ASSERT(newBuffer);
     return newBuffer;
 }
 
@@ -455,13 +431,11 @@ void Surface::damage(const QRect &rect)
         return;
     }
     SurfaceBuffer *surfaceBuffer =  m_bufferQueue.last();
-    if (surfaceBuffer) {
-        if (surfaceBuffer->isComitted()) {
-            if (QT_WAYLAND_PRINT_BUFFERING_WARNINGS)
-                qWarning("Surface::damage() on a committed surface");
-        } else{
-            surfaceBuffer->setDamage(rect);
-        }
+    if (surfaceBuffer->isComitted()) {
+        if (QT_WAYLAND_PRINT_BUFFERING_WARNINGS)
+            qWarning("Surface::damage() on a committed surface");
+    } else{
+        surfaceBuffer->setDamage(rect);
     }
 }
 
@@ -492,7 +466,7 @@ void Surface::surface_damage(Resource *, int32_t x, int32_t y, int32_t width, in
 void Surface::surface_frame(Resource *resource, uint32_t callback)
 {
     struct wl_resource *frame_callback = wl_client_add_object(resource->client(), &wl_callback_interface, 0, callback, this);
-    wl_list_insert(&m_pending_frame_callback_list, &frame_callback->link);
+    wl_list_insert(&m_frame_callback_list, &frame_callback->link);
 }
 
 void Surface::surface_set_opaque_region(Resource *, struct wl_resource *region)
@@ -513,26 +487,15 @@ void Surface::surface_commit(Resource *)
         return;
     }
 
-    if (!wl_list_empty(&m_pending_frame_callback_list))
-        m_compositor->markSurfaceAsDirty(this);
-
-    if (!wl_list_empty(&m_frame_callback_list))
-            qWarning("Previous callbacks not sent yet, client is not waiting for callbacks?");
-
-    wl_list_insert_list(&m_frame_callback_list, &m_pending_frame_callback_list);
-    wl_list_init(&m_pending_frame_callback_list);
-
     SurfaceBuffer *surfaceBuffer = m_bufferQueue.last();
-    if (surfaceBuffer) {
-        if (surfaceBuffer->isComitted()) {
-            if (QT_WAYLAND_PRINT_BUFFERING_WARNINGS)
-                qWarning("Committing buffer that has already been committed");
-        } else {
-            surfaceBuffer->setCommitted();
-        }
-        advanceBufferQueue();
+    if (surfaceBuffer->isComitted()) {
+        if (QT_WAYLAND_PRINT_BUFFERING_WARNINGS)
+            qWarning("Committing buffer that has already been committed");
+    } else {
+        surfaceBuffer->setCommitted();
     }
 
+    advanceBufferQueue();
     doUpdate();
 }
 

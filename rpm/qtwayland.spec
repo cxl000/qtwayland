@@ -1,7 +1,7 @@
 %define _qtmodule_snapshot_version 0.0-git855.e5601d283c
 Name:       qt5-qtwayland-wayland_egl
 Summary:    Qt Wayland compositor, wayland_egl variant
-Version:    0.0git855.e5601d283c
+Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
@@ -16,7 +16,7 @@ BuildRequires:  pkgconfig(Qt5PlatformSupport)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Declarative)
 BuildRequires:  pkgconfig(Qt5Quick)
-BuildRequires:  pkgconfig(Qt5V8)
+#BuildRequires:  pkgconfig(Qt5V8)
 BuildRequires:  pkgconfig(Qt5DBus)
 
 BuildRequires:  pkgconfig(wayland-client)

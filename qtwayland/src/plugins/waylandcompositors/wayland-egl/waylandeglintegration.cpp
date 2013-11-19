@@ -94,9 +94,6 @@ public:
     bool valid;
     bool display_bound;
     bool flipperConnected;
-#ifdef EGL_WL_request_client_buffer_format
-    QPointer<WaylandSurface> directRenderSurface;
-#endif
     PFNEGLBINDWAYLANDDISPLAYWL egl_bind_wayland_display;
     PFNEGLUNBINDWAYLANDDISPLAYWL egl_unbind_wayland_display;
     PFNEGLQUERYWAYLANDBUFFERWL egl_query_wayland_buffer;
@@ -207,11 +204,21 @@ GLuint WaylandEglIntegration::createTextureFromBuffer(struct ::wl_resource *buff
 
 bool WaylandEglIntegration::isYInverted(struct ::wl_resource *buffer) const
 {
-#ifdef EGL_WL_request_client_buffer_format
-    return eglGetBufferYInvertedWL(buffer);
-#else
-    return QWaylandGraphicsHardwareIntegration::isYInverted(buffer);
+    Q_D(const WaylandEglIntegration);
+
+#if defined(EGL_WAYLAND_Y_INVERTED_WL)
+    EGLint isYInverted;
+    EGLBoolean ret;
+    ret = d->egl_query_wayland_buffer(d->egl_display, reinterpret_cast<struct ::wl_buffer *>(buffer), EGL_WAYLAND_Y_INVERTED_WL, &isYInverted);
+
+    // Yes, this looks strange, but the specification says that EGL_FALSE return
+    // value (not supported) should be treated the same as EGL_TRUE return value
+    // and EGL_TRUE in value.
+    if (ret == EGL_FALSE || isYInverted == EGL_TRUE)
+        return true;
 #endif
+
+    return QWaylandGraphicsHardwareIntegration::isYInverted(buffer);
 }
 
 
@@ -225,22 +232,7 @@ bool WaylandEglIntegration::setDirectRenderSurface(QWaylandSurface *surface)
         QObject::connect(flipper, SIGNAL(bufferReleased(QPlatformScreenBuffer*)), m_compositor->handle(), SLOT(releaseBuffer(QPlatformScreenBuffer*)));
         d->flipperConnected = true;
     }
-#ifdef EGL_WL_request_client_buffer_format
-    int buffer_format = surface ? EGL_SCANOUT_FORMAT_WL : EGL_RENDER_FORMAT_WL;
-    struct wl_client *client = 0;
-    if (surface) {
-        client = surface->handle()->base()->resource.client;
-    } else {
-        WaylandSurface *oldSurface = d->directRenderSurface.data();
-        if (oldSurface)
-            client = oldSurface->handle()->base()->resource.client;
-    }
-    if (client)
-        eglRequestClientBufferFormatWL(d->egl_display, client, buffer_format);
-    d->directRenderSurface = surface;
-#else
     Q_UNUSED(surface);
-#endif
     return flipper;
 }
 

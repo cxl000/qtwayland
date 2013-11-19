@@ -86,8 +86,6 @@ public:
     void sendTouchCancelEvent();
 
     void sendFullKeyEvent(QKeyEvent *event);
-    void sendFullKeyEvent(Surface *surface, QKeyEvent *event);
-
     void sendFullTouchEvent(QTouchEvent *event);
 
     Surface *keyboardFocus() const;

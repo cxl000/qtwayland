@@ -47,7 +47,6 @@
 #include "wayland_wrapper/qwlsubsurface_p.h"
 #include "wayland_wrapper/qwlcompositor_p.h"
 #include "wayland_wrapper/qwlshellsurface_p.h"
-#include "wayland_wrapper/qwlinputdevice_p.h"
 
 #include "qwaylandcompositor.h"
 #include "waylandwindowmanagerintegration.h"
@@ -178,6 +177,7 @@ QWaylandSurface::WindowFlags QWaylandSurface::windowFlags() const
         return QWaylandSurface::WindowFlags(0);
     return d->surface->extendedSurface()->windowFlags();
 }
+
 
 QImage QWaylandSurface::image() const
 {
@@ -357,19 +357,6 @@ void QWaylandSurface::ping()
     Q_D(QWaylandSurface);
     if (d->surface->shellSurface())
         d->surface->shellSurface()->ping();
-}
-
-/*!
-    Updates the surface with the compositor's clipboard selection. This is done automatically
-    when the surface receives keyboard focus, but it may be useful to call this function
-    manually when a surface requires clipboard updates without receiving focus.
-*/
-void QWaylandSurface::updateSelection()
-{
-    Q_D(QWaylandSurface);
-    QtWayland::InputDevice *inputDevice = d->surface->compositor()->defaultInputDevice();
-    if (inputDevice)
-        inputDevice->sendSelectionFocus(d->surface);
 }
 
 QT_END_NAMESPACE

@@ -121,9 +121,9 @@ void QWaylandGLContext::swapBuffers(QPlatformSurface *surface)
         makeCurrent(surface);
         if (!m_blitProgram) {
             m_blitProgram = new QOpenGLShaderProgram();
-            m_blitProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, "attribute highp vec4 position;\n\
-                                                                        attribute highp vec4 texCoords;\n\
-                                                                        varying highp vec2 outTexCoords;\n\
+            m_blitProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, "attribute vec4 position;\n\
+                                                                        attribute vec4 texCoords;\n\
+                                                                        varying vec2 outTexCoords;\n\
                                                                         void main()\n\
                                                                         {\n\
                                                                             gl_Position = position;\n\

@@ -46,7 +46,6 @@
 #include <private/qwlsurfacebuffer_p.h>
 #include <QtCompositor/qwaylandsurface.h>
 
-#include <QtCore/QVector>
 #include <QtCore/QRect>
 #include <QtGui/QImage>
 
@@ -151,7 +150,6 @@ private:
     QPoint m_lastGlobalMousePos;
 
     struct wl_list m_frame_callback_list;
-    struct wl_list m_pending_frame_callback_list;
 
     ExtendedSurface *m_extendedSurface;
     SubSurface *m_subSurface;
@@ -160,7 +158,8 @@ private:
     QRegion m_inputRegion;
     QRegion m_opaqueRegion;
 
-    QVector<SurfaceBuffer *> m_bufferPool;
+    static const int buffer_pool_size = 3;
+    SurfaceBuffer *m_bufferPool[buffer_pool_size];
 
     QPointF m_position;
     QSize m_size;
@@ -168,11 +167,6 @@ private:
     QString m_title;
     bool m_transientInactive;
     bool m_isCursorSurface;
-
-#ifdef QT_COMPOSITOR_WAYLAND_GL
-    mutable bool m_textureIdBufferNeedsDisown;
-    mutable const SurfaceBuffer *m_textureIdBuffer;
-#endif
 
     inline SurfaceBuffer *currentSurfaceBuffer() const;
     void damage(const QRect &rect);

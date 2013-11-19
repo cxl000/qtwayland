@@ -73,7 +73,6 @@ public:
     void sendKeyReleaseEvent(uint code);
 
     void sendFullKeyEvent(QKeyEvent *event);
-    void sendFullKeyEvent(QWaylandSurface *surface, QKeyEvent *event);
 
     void sendTouchPointEvent(int id, double x, double y, Qt::TouchPointState state);
     void sendTouchFrameEvent();

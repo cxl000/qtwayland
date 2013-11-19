@@ -286,7 +286,6 @@ void ShellSurface::shell_surface_pong(Resource *resource,
                         uint32_t serial)
 {
     Q_UNUSED(resource);
-    Q_UNUSED(serial);
     if (m_pings.remove(serial))
         emit m_surface->waylandSurface()->pong();
     else

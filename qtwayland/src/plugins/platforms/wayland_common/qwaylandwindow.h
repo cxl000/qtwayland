@@ -136,8 +136,6 @@ public:
     void raise() Q_DECL_OVERRIDE;
     void lower() Q_DECL_OVERRIDE;
 
-    void requestActivateWindow();
-
     QWaylandDecoration *decoration() const;
     void setDecoration(QWaylandDecoration *decoration);
 
@@ -164,6 +162,10 @@ public:
     QMutex *resizeMutex() { return &mResizeLock; }
     void doResize();
     void setCanResize(bool canResize);
+
+    bool setMouseGrabEnabled(bool grab);
+    static QWaylandWindow *mouseGrab() { return mMouseGrab; }
+
 public slots:
     void requestResize();
 
@@ -211,6 +213,7 @@ private:
     static void frameCallback(void *data, struct wl_callback *wl_callback, uint32_t time);
 
     static QMutex mFrameSyncMutex;
+    static QWaylandWindow *mMouseGrab;
 };
 
 inline QIcon QWaylandWindow::windowIcon() const

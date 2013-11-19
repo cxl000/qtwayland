@@ -61,6 +61,8 @@
 
 QT_BEGIN_NAMESPACE
 
+QWaylandWindow *QWaylandWindow::mMouseGrab = 0;
+
 QWaylandWindow::QWaylandWindow(QWindow *window)
     : QObject()
     , QPlatformWindow(window)
@@ -72,6 +74,7 @@ QWaylandWindow::QWaylandWindow(QWindow *window)
     , mWindowDecoration(0)
     , mMouseEventsInContentArea(false)
     , mMousePressedInContentArea(Qt::NoButton)
+    , m_cursorShape(Qt::ArrowCursor)
     , mBuffer(0)
     , mWaitingForFrameSync(false)
     , mFrameCallback(0)
@@ -138,6 +141,10 @@ QWaylandWindow::~QWaylandWindow()
         if (w->transientParent() == parent)
             QWindowSystemInterface::handleCloseEvent(w);
     }
+
+    if (mMouseGrab == this) {
+        mMouseGrab = 0;
+    }
 }
 
 QWaylandWindow *QWaylandWindow::fromWlSurface(::wl_surface *surface)
@@ -182,7 +189,7 @@ void QWaylandWindow::setGeometry(const QRect &rect)
                 qBound(window()->minimumWidth(), rect.width(), window()->maximumWidth()),
                 qBound(window()->minimumHeight(), rect.height(), window()->maximumHeight())));
 
-    if (shellSurface() && window()->transientParent())
+    if (shellSurface() && window()->transientParent() && window()->type() != Qt::Popup)
         shellSurface()->updateTransientParent(window()->transientParent());
 
     if (mWindowDecoration && window()->isVisible())
@@ -218,15 +225,12 @@ void QWaylandWindow::setVisible(bool visible)
         // Don't flush the events here, or else the newly visible window may start drawing, but since
         // there was no frame before it will be stuck at the waitForFrameSync() in
         // QWaylandShmBackingStore::beginPaint().
-        if (mBuffer) {
-            damage(QRect(QPoint(0,0),geometry().size()));
-            commit();
-        }
     } else {
         QWindowSystemInterface::handleExposeEvent(window(), QRegion());
         attach(static_cast<QWaylandBuffer *>(0), 0, 0);
-        commit();
     }
+    damage(QRect(QPoint(0,0),geometry().size()));
+    commit();
 }
 
 
@@ -584,10 +588,15 @@ void QWaylandWindow::restoreMouseCursor(QWaylandInputDevice *device)
     setMouseCursor(device, window()->cursor().shape());
 }
 
-void QWaylandWindow::requestActivateWindow()
+bool QWaylandWindow::setMouseGrabEnabled(bool grab)
 {
-    // no-op. Wayland does not have activation protocol,
-    // we rely on compositor setting keyboard focus based on window stacking.
+    if (window()->type() != Qt::Popup) {
+        qWarning("This plugin supports grabbing the mouse only for popup windows");
+        return false;
+    }
+
+    mMouseGrab = grab ? this : 0;
+    return true;
 }
 
 QT_END_NAMESPACE

@@ -61,7 +61,6 @@ public:
     QtKeyExtensionGlobal(Compositor *compositor);
 
     bool postQtKeyEvent(QKeyEvent *event, Surface *surface);
-    bool postGlobalQtKeyEvent(QKeyEvent *event, Surface *surface);
 
 private:
     Compositor *m_compositor;
