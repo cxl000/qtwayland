@@ -164,10 +164,6 @@ public:
     Q_INVOKABLE void destroySurface();
     Q_INVOKABLE void destroySurfaceByForce();
     Q_INVOKABLE void ping();
-
-public slots:
-    void updateSelection();
-
 signals:
     void mapped();
     void unmapped();

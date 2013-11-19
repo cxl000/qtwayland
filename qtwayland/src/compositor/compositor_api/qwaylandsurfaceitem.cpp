@@ -126,6 +126,7 @@ void QWaylandSurfaceItem::init(QWaylandSurface *surface)
 
     m_surface = surface;
     m_surface->setSurfaceItem(this);
+    m_surface->sendOnScreenVisibilityChange(m_clientRenderingEnabled);
 
     if (m_resizeSurfaceToItem) {
         updateSurfaceSize();
@@ -276,12 +277,12 @@ void QWaylandSurfaceItem::takeFocus()
 
 void QWaylandSurfaceItem::surfaceMapped()
 {
-    update();
+    setPaintEnabled(true);
 }
 
 void QWaylandSurfaceItem::surfaceUnmapped()
 {
-    update();
+    setPaintEnabled(false);
 }
 
 void QWaylandSurfaceItem::surfaceDestroyed(QObject *)

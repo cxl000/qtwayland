@@ -59,10 +59,9 @@ class QmlCompositor : public QQuickView, public QWaylandCompositor
 
 public:
     QmlCompositor()
-        : QWaylandCompositor(this)
+        : QWaylandCompositor(this, 0, static_cast<ExtensionFlag>(DefaultExtensions | SubSurfaceExtension))
         , m_fullscreenSurface(0)
     {
-        enableSubSurfaceExtension();
         setSource(QUrl("main.qml"));
         setResizeMode(QQuickView::SizeRootObjectToView);
         setColor(Qt::black);
@@ -159,8 +158,8 @@ int main(int argc, char *argv[])
     QmlCompositor compositor;
     compositor.setTitle(QLatin1String("QML Compositor"));
     compositor.setGeometry(0, 0, 1024, 768);
-    compositor.showFullScreen();
-    
+    compositor.show();
+
     compositor.rootContext()->setContextProperty("compositor", &compositor);
 
     QObject::connect(&compositor, SIGNAL(windowAdded(QVariant)), compositor.rootObject(), SLOT(windowAdded(QVariant)));

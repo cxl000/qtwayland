@@ -44,7 +44,6 @@
 
 #include <QString>
 #include <QByteArray>
-#include <QHash>
 #include <QMimeData>
 
 #include <QtGui/private/qdnd_p.h>
@@ -63,7 +62,6 @@ class QWaylandDisplay;
 
 class QWaylandDataOffer : public QInternalMimeData
 {
-    Q_OBJECT
 public:
     QWaylandDataOffer(QWaylandDisplay *display, struct wl_data_offer *offer);
     ~QWaylandDataOffer();
@@ -73,12 +71,11 @@ public:
     QVariant retrieveData_sys(const QString &mimeType, QVariant::Type type) const;
 
     struct wl_data_offer *handle() const;
-
 private:
-    static int readData(int fd, QByteArray &data);
 
-    struct wl_data_offer *m_handle;
+    struct wl_data_offer *m_data_offer;
     QWaylandDisplay *m_display;
+    QStringList m_offered_mime_types;
     wl_callback *m_receiveSyncCallback;
 
     static void offer(void *data, struct wl_data_offer *wl_data_offer, const char *type);
@@ -86,9 +83,6 @@ private:
 
     static void offer_sync_callback(void *data, struct wl_callback *wl_callback, uint32_t time);
     static const struct wl_callback_listener offer_sync_callback_listener;
-
-    mutable QHash<QString, int> m_types;
-    mutable QHash<QString, QByteArray> m_data;
 };
 
 QT_END_NAMESPACE

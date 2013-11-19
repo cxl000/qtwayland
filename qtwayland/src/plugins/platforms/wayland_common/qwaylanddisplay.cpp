@@ -62,7 +62,6 @@
 #include "qwaylandqtkey.h"
 
 #include <QtCore/QAbstractEventDispatcher>
-#include <QtCore/QCoreApplication>
 #include <QtGui/private/qguiapplication_p.h>
 
 #include <QtCore/QDebug>
@@ -130,8 +129,6 @@ QWaylandDisplay::QWaylandDisplay()
 
     init(registry);
 
-    QAbstractEventDispatcher *dispatcher = QGuiApplicationPrivate::eventDispatcher;
-    connect(dispatcher, SIGNAL(aboutToBlock()), this, SLOT(flushRequests()));
     connect(mEventThreadObject, SIGNAL(newEventsRead()), this, SLOT(flushRequests()));
 
 #ifdef QT_WAYLAND_GL_SUPPORT

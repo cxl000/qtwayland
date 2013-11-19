@@ -1,7 +1,7 @@
 %define _qtmodule_snapshot_version 0.0-git855.e5601d283c
 Name:       qt5-qtwayland-nogl
 Summary:    Qt Wayland compositor, nogl variant
-Version:    0.0git855.e5601d283c
+Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
@@ -16,7 +16,7 @@ BuildRequires:  pkgconfig(Qt5PlatformSupport)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Declarative)
 BuildRequires:  pkgconfig(Qt5Quick)
-BuildRequires:  pkgconfig(Qt5V8)
+#BuildRequires:  pkgconfig(Qt5V8)
 BuildRequires:  pkgconfig(Qt5DBus)
 
 BuildRequires:  pkgconfig(wayland-client)
@@ -119,7 +119,9 @@ rm -rf %{buildroot}/%{_includedir}/qt5/Qt
 %{_libdir}/libQt5Compositor.prl
 %{_libdir}/pkgconfig/Qt5Compositor.pc
 %{_libdir}/cmake/Qt5Compositor/*
+%{_libdir}/cmake/Qt5Gui/Qt5Gui_.cmake
 %{_datadir}/qt5/mkspecs/modules/qt_lib_compositor.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_compositor_private.pri
 %{_libdir}/qt5/bin/qtwaylandscanner
 
 %files examples
