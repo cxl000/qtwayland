@@ -64,6 +64,10 @@ This package contains the Qt wayland compositor examples for nogl
 
 %prep
 %setup -q -n %{name}-%{version}/qtwayland
+if [ -f /usr/share/wayland/wayland.xml ]
+then
+    cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
+fi
 
 %build
 export QTDIR=/usr/share/qt5
@@ -86,6 +90,8 @@ find %{buildroot}%{_libdir} -type f -name '*.prl' \
 # We don't need qt5/Qt/
 rm -rf %{buildroot}/%{_includedir}/qt5/Qt
 
+install -D -m 644 src/compositor/qwayland-server-wayland.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/qwayland-server-wayland.h
+install -D -m 644 src/compositor/wayland-wayland-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/wayland-wayland-server-protocol.h
 
 %fdupes %{buildroot}/%{_includedir}
 
