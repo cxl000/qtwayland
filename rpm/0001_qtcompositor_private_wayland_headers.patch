@@ -271,6 +271,32 @@ index 9741a21..164755c 100644
  
  QT_BEGIN_NAMESPACE
  
+diff --git a/src/compositor/wayland_wrapper/qwltextinput_p.h b/src/compositor/wayland_wrapper/qwltextinput_p.h
+index c624387..677d39e 100644
+--- a/src/compositor/wayland_wrapper/qwltextinput_p.h
++++ b/src/compositor/wayland_wrapper/qwltextinput_p.h
+@@ -41,7 +41,7 @@
+ #ifndef QTWAYLAND_QWLTEXTINPUT_P_H
+ #define QTWAYLAND_QWLTEXTINPUT_P_H
+ 
+-#include <qwayland-server-text.h>
++#include <private/qwayland-server-text.h>
+ 
+ #include <QRect>
+ 
+diff --git a/src/compositor/wayland_wrapper/qwltextinputmanager_p.h b/src/compositor/wayland_wrapper/qwltextinputmanager_p.h
+index 081fdfa..08199aa 100644
+--- a/src/compositor/wayland_wrapper/qwltextinputmanager_p.h
++++ b/src/compositor/wayland_wrapper/qwltextinputmanager_p.h
+@@ -41,7 +41,7 @@
+ #ifndef QTWAYLAND_QWLTEXTINPUTMANAGER_P_H
+ #define QTWAYLAND_QWLTEXTINPUTMANAGER_P_H
+ 
+-#include <qwayland-server-text.h>
++#include <private/qwayland-server-text.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
 diff --git a/src/compositor/wayland_wrapper/qwltouch_p.h b/src/compositor/wayland_wrapper/qwltouch_p.h
 index d967b71..14b9e85 100644
 --- a/src/compositor/wayland_wrapper/qwltouch_p.h
