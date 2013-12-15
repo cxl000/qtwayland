@@ -8,6 +8,7 @@ License:    LGPLv2.1 with exception or GPLv3
 URL:        http://qt.nokia.com
 Source0:    %{name}-%{version}.tar.bz2
 Source100:	precheckin.sh
+Patch0:     0001_qtcompositor_private_wayland_headers.patch
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Widgets)
@@ -64,12 +65,11 @@ This package contains the Qt wayland compositor examples for wayland_egl
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
+%patch0 -p 1
 if [ -f /usr/share/wayland/wayland.xml ]
 then
     cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
 fi
-wayland-scanner server-header < src/3rdparty/protocol/wayland.xml > src/compositor/wayland_wrapper/wayland-wayland-server-protocol.h
-wayland-scanner server-header < src/extensions/sub-surface-extension.xml > src/compositor/wayland_wrapper/wayland-sub-surface-extension-server-protocol.h
 
 
 %build

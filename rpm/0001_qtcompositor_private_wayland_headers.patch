@@ -1,0 +1,26 @@
+diff --git a/src/compositor/wayland_wrapper/qwldisplay.cpp b/src/compositor/wayland_wrapper/qwldisplay.cpp
+index 5dd6e38..2321ba5 100644
+--- a/src/compositor/wayland_wrapper/qwldisplay.cpp
++++ b/src/compositor/wayland_wrapper/qwldisplay.cpp
+@@ -42,7 +42,7 @@
+ 
+ #include <QtCore/QDebug>
+ 
+-#include <wayland-wayland-server-protocol.h>
++#include <private/wayland-wayland-server-protocol.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlsubsurface_p.h b/src/compositor/wayland_wrapper/qwlsubsurface_p.h
+index 6f6ad12..2d67af8 100644
+--- a/src/compositor/wayland_wrapper/qwlsubsurface_p.h
++++ b/src/compositor/wayland_wrapper/qwlsubsurface_p.h
+@@ -43,7 +43,7 @@
+ 
+ #include <private/qwlsurface_p.h>
+ 
+-#include "wayland-sub-surface-extension-server-protocol.h"
++#include "private/wayland-sub-surface-extension-server-protocol.h"
+ 
+ #include <QtCore/QLinkedList>
+ 
