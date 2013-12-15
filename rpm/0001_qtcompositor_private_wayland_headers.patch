@@ -1,3 +1,55 @@
+diff --git a/src/compositor/wayland_wrapper/qwldatadevice_p.h b/src/compositor/wayland_wrapper/qwldatadevice_p.h
+index edbb517..69965a4 100644
+--- a/src/compositor/wayland_wrapper/qwldatadevice_p.h
++++ b/src/compositor/wayland_wrapper/qwldatadevice_p.h
+@@ -41,7 +41,7 @@
+ #ifndef WLDATADEVICE_H
+ #define WLDATADEVICE_H
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ #include <qwlpointer_p.h>
+ 
+ QT_BEGIN_NAMESPACE
+diff --git a/src/compositor/wayland_wrapper/qwldatadevicemanager_p.h b/src/compositor/wayland_wrapper/qwldatadevicemanager_p.h
+index dcb51e1..263008d 100644
+--- a/src/compositor/wayland_wrapper/qwldatadevicemanager_p.h
++++ b/src/compositor/wayland_wrapper/qwldatadevicemanager_p.h
+@@ -48,7 +48,7 @@
+ #include <QtGui/QClipboard>
+ #include <QtCore/QMimeData>
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwldataoffer_p.h b/src/compositor/wayland_wrapper/qwldataoffer_p.h
+index d296585..21d8658 100644
+--- a/src/compositor/wayland_wrapper/qwldataoffer_p.h
++++ b/src/compositor/wayland_wrapper/qwldataoffer_p.h
+@@ -41,7 +41,7 @@
+ #ifndef WLDATAOFFER_H
+ #define WLDATAOFFER_H
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwldatasource_p.h b/src/compositor/wayland_wrapper/qwldatasource_p.h
+index c46e713..630a65c 100644
+--- a/src/compositor/wayland_wrapper/qwldatasource_p.h
++++ b/src/compositor/wayland_wrapper/qwldatasource_p.h
+@@ -41,7 +41,7 @@
+ #ifndef WLDATASOURCE_H
+ #define WLDATASOURCE_H
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ #include <QtCore/QList>
+ 
 diff --git a/src/compositor/wayland_wrapper/qwldisplay.cpp b/src/compositor/wayland_wrapper/qwldisplay.cpp
 index 5dd6e38..2321ba5 100644
 --- a/src/compositor/wayland_wrapper/qwldisplay.cpp
@@ -8,6 +60,84 @@ index 5dd6e38..2321ba5 100644
  
 -#include <wayland-wayland-server-protocol.h>
 +#include <private/wayland-wayland-server-protocol.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlinputdevice_p.h b/src/compositor/wayland_wrapper/qwlinputdevice_p.h
+index 3f7e4cc..741e8da 100644
+--- a/src/compositor/wayland_wrapper/qwlinputdevice_p.h
++++ b/src/compositor/wayland_wrapper/qwlinputdevice_p.h
+@@ -53,7 +53,7 @@
+ #include <xkbcommon/xkbcommon.h>
+ #endif
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlkeyboard_p.h b/src/compositor/wayland_wrapper/qwlkeyboard_p.h
+index a350a74..2251e16 100644
+--- a/src/compositor/wayland_wrapper/qwlkeyboard_p.h
++++ b/src/compositor/wayland_wrapper/qwlkeyboard_p.h
+@@ -45,7 +45,7 @@
+ #include <QtCompositor/qwaylandexport.h>
+ 
+ #include <QObject>
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ #include <QtCore/QByteArray>
+ 
+diff --git a/src/compositor/wayland_wrapper/qwloutput_p.h b/src/compositor/wayland_wrapper/qwloutput_p.h
+index 514d3e9..bf33c62 100644
+--- a/src/compositor/wayland_wrapper/qwloutput_p.h
++++ b/src/compositor/wayland_wrapper/qwloutput_p.h
+@@ -44,7 +44,7 @@
+ #include <QtCore/QRect>
+ #include <QtCore/QList>
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlpointer_p.h b/src/compositor/wayland_wrapper/qwlpointer_p.h
+index 3200e10..013c882 100644
+--- a/src/compositor/wayland_wrapper/qwlpointer_p.h
++++ b/src/compositor/wayland_wrapper/qwlpointer_p.h
+@@ -47,7 +47,7 @@
+ #include <QtCore/QList>
+ #include <QtCore/QPoint>
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ #include <stdint.h>
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlregion_p.h b/src/compositor/wayland_wrapper/qwlregion_p.h
+index f905d96..e67e7f7 100644
+--- a/src/compositor/wayland_wrapper/qwlregion_p.h
++++ b/src/compositor/wayland_wrapper/qwlregion_p.h
+@@ -46,7 +46,7 @@
+ #include <QRegion>
+ 
+ #include <wayland-util.h>
+-#include "qwayland-server-wayland.h"
++#include "private/qwayland-server-wayland.h"
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlshellsurface_p.h b/src/compositor/wayland_wrapper/qwlshellsurface_p.h
+index 9104293..eccafa2 100644
+--- a/src/compositor/wayland_wrapper/qwlshellsurface_p.h
++++ b/src/compositor/wayland_wrapper/qwlshellsurface_p.h
+@@ -50,7 +50,7 @@
+ #include <QSet>
+ #include <private/qwlpointer_p.h>
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
  
  QT_BEGIN_NAMESPACE
  
@@ -23,4 +153,82 @@ index 6f6ad12..2d67af8 100644
 +#include "private/wayland-sub-surface-extension-server-protocol.h"
  
  #include <QtCore/QLinkedList>
+ 
+diff --git a/src/compositor/wayland_wrapper/qwlsurface_p.h b/src/compositor/wayland_wrapper/qwlsurface_p.h
+index 9741a21..164755c 100644
+--- a/src/compositor/wayland_wrapper/qwlsurface_p.h
++++ b/src/compositor/wayland_wrapper/qwlsurface_p.h
+@@ -59,7 +59,7 @@
+ 
+ #include <wayland-util.h>
+ 
+-#include "qwayland-server-wayland.h"
++#include "private/qwayland-server-wayland.h"
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/compositor/wayland_wrapper/qwltouch_p.h b/src/compositor/wayland_wrapper/qwltouch_p.h
+index d967b71..14b9e85 100644
+--- a/src/compositor/wayland_wrapper/qwltouch_p.h
++++ b/src/compositor/wayland_wrapper/qwltouch_p.h
+@@ -46,7 +46,7 @@
+ 
+ #include <QtCore/QPoint>
+ 
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+diff --git a/src/plugins/waylandcompositors/brcm-egl/brcmbuffer.h b/src/plugins/waylandcompositors/brcm-egl/brcmbuffer.h
+index 6ec5868..19d5dc3 100644
+--- a/src/plugins/waylandcompositors/brcm-egl/brcmbuffer.h
++++ b/src/plugins/waylandcompositors/brcm-egl/brcmbuffer.h
+@@ -42,7 +42,7 @@
+ #define BRCMBUFFER_H
+ 
+ #include <QtCompositor/private/qwlcompositor_p.h>
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ #include <QtCore/QSize>
+ #include <QtCore/QVector>
+diff --git a/src/plugins/waylandcompositors/xcomposite_share/xcompositebuffer.h b/src/plugins/waylandcompositors/xcomposite_share/xcompositebuffer.h
+index 20cf399..01a7fcd 100644
+--- a/src/plugins/waylandcompositors/xcomposite_share/xcompositebuffer.h
++++ b/src/plugins/waylandcompositors/xcomposite_share/xcompositebuffer.h
+@@ -42,7 +42,7 @@
+ #define XCOMPOSITEBUFFER_H
+ 
+ #include <private/qwlcompositor_p.h>
+-#include <qwayland-server-wayland.h>
++#include <private/qwayland-server-wayland.h>
+ 
+ #include <QtCore/QSize>
+ 
+diff --git a/tests/auto/client/mockinput.h b/tests/auto/client/mockinput.h
+index 669bfae..ac895f3 100644
+--- a/tests/auto/client/mockinput.h
++++ b/tests/auto/client/mockinput.h
+@@ -45,7 +45,7 @@
+ 
+ #include <qglobal.h>
+ 
+-#include "qwayland-server-wayland.h"
++#include "private/qwayland-server-wayland.h"
+ 
+ #include "mockcompositor.h"
+ 
+diff --git a/tests/auto/client/mocksurface.h b/tests/auto/client/mocksurface.h
+index 49260f5..5a2f634 100644
+--- a/tests/auto/client/mocksurface.h
++++ b/tests/auto/client/mocksurface.h
+@@ -41,7 +41,7 @@
+ 
+ #include <qglobal.h>
+ 
+-#include "qwayland-server-wayland.h"
++#include "private/qwayland-server-wayland.h"
+ 
+ #include "mockcompositor.h"
  
