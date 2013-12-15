@@ -68,6 +68,9 @@ if [ -f /usr/share/wayland/wayland.xml ]
 then
     cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
 fi
+wayland-scanner server-header < src/3rdparty/protocol/wayland.xml > src/compositor/wayland_wrapper/wayland-wayland-server-protocol.h
+wayland-scanner server-header < src/extensions/sub-surface-extension.xml > src/compositor/wayland_wrapper/wayland-sub-surface-extension-server-protocol.h
+
 
 %build
 export QTDIR=/usr/share/qt5
