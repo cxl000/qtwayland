@@ -65,7 +65,7 @@ This package contains the Qt wayland compositor examples for wayland_egl
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
-%patch0 -p 1
+#%patch0 -p 1
 if [ -f /usr/share/wayland/wayland.xml ]
 then
     cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
@@ -83,6 +83,18 @@ make %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 %qmake_install
+ls -l include/QtCompositor/5.1.0/QtCompositor/private
+ls -l %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-wayland.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-wayland.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-output-extension.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-output-extension.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-surface-extension.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-surface-extension.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-touch-extension.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-touch-extension.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-qtkey-extension.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-qtkey-extension.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-input-method.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-input-method.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-text.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-text.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-windowmanager.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-windowmanager.h
+ln -s qtchooser %{buildroot}/%{_bindir}/qtwaylandscanner
+
 # Fix wrong path in pkgconfig files
 find %{buildroot}%{_libdir}/pkgconfig -type f -name '*.pc' \
 -exec perl -pi -e "s, -L%{_builddir}/?\S+,,g" {} \;
@@ -120,6 +132,7 @@ rm -rf %{buildroot}/%{_includedir}/qt5/Qt
 
 %files devel
 %defattr(-,root,root,-)
+%{_bindir}/qtwaylandscanner
 %{_libdir}/libQt5Compositor.so
 %{_includedir}/qt5/*
 %{_libdir}/libQt5Compositor.la
