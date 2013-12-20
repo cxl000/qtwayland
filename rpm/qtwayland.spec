@@ -65,7 +65,7 @@ This package contains the Qt wayland compositor examples for wayland_egl
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
-#%patch0 -p 1
+%patch0 -p 1
 if [ -f /usr/share/wayland/wayland.xml ]
 then
     cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
