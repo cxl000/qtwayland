@@ -99,7 +99,8 @@ install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-te
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-touch-extension-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-touch-extension-server-protocol.h
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-wayland-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-wayland-server-protocol.h
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-windowmanager-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-windowmanager-server-protocol.h
-ln -s %{_bindir}/qtchooser %{buildroot}/%{_bindir}/qtwaylandscanner
+mkdir -p %{buildroot}/%{_bindir}
+ln -s qtchooser %{buildroot}/%{_bindir}/qtwaylandscanner
 
 # Fix wrong path in pkgconfig files
 find %{buildroot}%{_libdir}/pkgconfig -type f -name '*.pc' \
