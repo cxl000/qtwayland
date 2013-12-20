@@ -1,4 +1,3 @@
-%define _qtmodule_snapshot_version 0.0-git855.e5601d283c
 Name:       qt5-qtwayland-wayland_egl
 Summary:    Qt Wayland compositor, wayland_egl variant
 Version:    5.2.0
@@ -17,7 +16,6 @@ BuildRequires:  pkgconfig(Qt5PlatformSupport)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Declarative)
 BuildRequires:  pkgconfig(Qt5Quick)
-#BuildRequires:  pkgconfig(Qt5V8)
 BuildRequires:  pkgconfig(Qt5DBus)
 
 BuildRequires:  pkgconfig(wayland-client)
@@ -93,7 +91,15 @@ install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-s
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-input-method.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-input-method.h
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-text.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-text.h
 install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-windowmanager.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/qwayland-server-windowmanager.h
-ln -s qtchooser %{buildroot}/%{_bindir}/qtwaylandscanner
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-input-method-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-output-extension-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-qtkey-extension-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-qtkey-extension-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-sub-surface-extension-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-sub-surface-extension-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-surface-extension-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-surface-extension-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-text-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-text-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-touch-extension-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-touch-extension-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-wayland-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-wayland-server-protocol.h
+install -D -p -m 0644 include/QtCompositor/5.1.0/QtCompositor/private/wayland-windowmanager-server-protocol.h %{buildroot}/%{_includedir}/qt5/QtCompositor/5.1.0/QtCompositor/private/wayland-windowmanager-server-protocol.h
+ln -s %{_bindir}/qtchooser %{buildroot}/%{_bindir}/qtwaylandscanner
 
 # Fix wrong path in pkgconfig files
 find %{buildroot}%{_libdir}/pkgconfig -type f -name '*.pc' \
