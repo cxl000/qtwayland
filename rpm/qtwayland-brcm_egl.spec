@@ -1,5 +1,5 @@
-Name:       qt5-qtwayland-xcomposite_egl
-Summary:    Qt Wayland compositor, variant xcomposite_egl
+Name:       qt5-qtwayland-brcm_egl
+Summary:    Qt Wayland compositor, variant brcm_egl
 Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
@@ -38,7 +38,7 @@ Qt is a cross-platform application and UI framework. Using Qt, you can
 write web-enabled applications once and deploy them across desktop,
 mobile and embedded systems without rewriting the source code.
 .
-This package contains the Qt wayland compositor for xcomposite_egl
+This package contains the Qt wayland compositor for brcm_egl
 
 %package devel
 Summary:        Qt Wayland compositor - development files
@@ -50,7 +50,7 @@ Qt is a cross-platform application and UI framework. Using Qt, you can
 write web-enabled applications once and deploy them across desktop,
 mobile and embedded systems without rewriting the source code.
 .
-This package contains the Qt wayland compositor development files for xcomposite_egl
+This package contains the Qt wayland compositor development files for brcm_egl
 
 %package examples
 Summary:        Qt Wayland compositor - examples
@@ -62,7 +62,7 @@ Qt is a cross-platform application and UI framework. Using Qt, you can
 write web-enabled applications once and deploy them across desktop,
 mobile and embedded systems without rewriting the source code.
 .
-This package contains the Qt wayland compositor examples for xcomposite_egl
+This package contains the Qt wayland compositor examples for brcm_egl
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
@@ -77,7 +77,7 @@ fi
 
 %build
 export QTDIR=/usr/share/qt5
-export QT_WAYLAND_GL_CONFIG=xcomposite_egl
+export QT_WAYLAND_GL_CONFIG=brcm_egl
 touch .git
 %qmake5 "QT_BUILD_PARTS += examples" "CONFIG += wayland-compositor" 
 

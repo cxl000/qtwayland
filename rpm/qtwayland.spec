@@ -1,5 +1,5 @@
 Name:       qt5-qtwayland-wayland_egl
-Summary:    Qt Wayland compositor, wayland_egl variant
+Summary:    Qt Wayland compositor, variant wayland_egl
 Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
@@ -7,7 +7,7 @@ License:    LGPLv2.1 with exception or GPLv3
 URL:        http://qt.nokia.com
 Source0:    %{name}-%{version}.tar.bz2
 Source100:	precheckin.sh
-Patch0:     0001_qtcompositor_private_wayland_headers.patch
+Patch0:     qtwayland-brcm_egl-force-vc-include-bcm-libs.patch
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Widgets)
@@ -21,6 +21,9 @@ BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(wayland-client)
 %if "%{name}" == "qt5-qtwayland-wayland_egl"
 BuildRequires:  pkgconfig(wayland-egl)
+%endif
+%if "%{name}" == "qt5-qtwayland-brcm_egl"
+BuildRequires:  xorg-x11-proto-xproto
 %endif
 
 BuildRequires:  libxkbcommon-devel
@@ -63,7 +66,9 @@ This package contains the Qt wayland compositor examples for wayland_egl
 
 %prep
 %setup -q -n %{name}-%{version}/upstream
-#%patch0 -p 1
+%if "%{name}" == "qt5-qtwayland-brcm_egl"
+%patch0 -p 1
+%endif
 if [ -f /usr/share/wayland/wayland.xml ]
 then
     cp /usr/share/wayland/wayland.xml src/3rdparty/protocol/wayland.xml
@@ -129,13 +134,18 @@ rm -rf %{buildroot}/%{_includedir}/qt5/Qt
 %{_libdir}/libQt5WaylandClient.so.5*
 
 %{_libdir}/qt5/plugins/platforms/libqwayland-generic.so
-%{_libdir}/qt5/plugins/wayland-graphics-integration/client/libdrm-egl-server.so
-%{_libdir}/qt5/plugins/wayland-graphics-integration/server/libdrm-egl-server.so
+%if "%{name}" == "qt5-qtwayland-brcm_egl"
+%{_libdir}/qt5/plugins/platforms/libqwayland-brcm-egl.so
+%{_libdir}/qt5/plugins/wayland-graphics-integration/server/libbrcm-egl.so
+%{_libdir}/qt5/plugins/wayland-graphics-integration/client/libbrcm-egl.so
+%endif
 
 %if "%{name}" == "qt5-qtwayland-wayland_egl"
 %{_libdir}/qt5/plugins/platforms/libqwayland-egl.so
 %{_libdir}/qt5/plugins/wayland-graphics-integration/client/libwayland-egl.so
 %{_libdir}/qt5/plugins/wayland-graphics-integration/server/libwayland-egl.so
+%{_libdir}/qt5/plugins/wayland-graphics-integration/client/libdrm-egl-server.so
+%{_libdir}/qt5/plugins/wayland-graphics-integration/server/libdrm-egl-server.so
 %endif
 
 %if "%{name}" == "qt5-qtwayland-xcomposite_egl"
